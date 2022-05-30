@@ -169,3 +169,11 @@ export const createRuleApi = function(playod = {}) {
 export const createRuleGroupApi = function(playod = {}) {
     return axios.post('/api/roleGroup/create', playod)
 }
+/**
+ * 
+ * @param {} playod 
+ * 创建分组
+ */
+export const commentListApi = function(playod = {}) {
+    return axios.post('/api/comment/list', playod)
+}

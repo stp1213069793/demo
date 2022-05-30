@@ -96,12 +96,22 @@
           </el-timeline>
         </div>
     </el-tab-pane>
-    <el-tab-pane label="只看评论" name="third">只看评论</el-tab-pane>
+      <el-tab-pane label="只看评论" name="third">
+    <div v-for="(comment,index) in commentListData" :key="index">
+        <div>评论ID：{{comment.commentId}}</div>
+        <div>评论内容：{{comment.commentContent}}</div>
+        <div>评论时间：{{comment.commentCreatedAt}}</div>
+        <div>任务ID：{{comment.taskId}}</div>
+        <div>任务名字：{{comment.taskName}}</div>
+        <div>评论用户ID：{{comment.userId}}</div>
+        <div>评论用户名字： {{comment.username}}</div>
+    </div>
+    </el-tab-pane>
   </el-tabs>
         </div>
       
       </div>
-
+<!-- 评论区 -->
       <div class="flex-center">
         <el-button round>圆角按钮</el-button>
         <div class="edit">
@@ -222,26 +232,33 @@
   </div>
 </template>
 <script>
-import { taskDetailsApi } from "@/api/api";
+import { taskDetailsApi ,commentListApi} from "@/api/api";
 export default {
   data() {
     return {
       taskInfo: [],
       reverse: false,
-      activities: [
-
-      ],
+      activities: [],
+      activeName:'first',
+      commentListData:[]
     };
   },
   async created() {
-    console.log(this.$route.query.id);
-    let res = await taskDetailsApi({
-      taskId: this.$route.query.id,
-    });
-    this.taskInfo.push(res.data.data);
+    // console.log(this.$route.query.id);
+    // let res = await taskDetailsApi({
+    //   taskId: this.$route.query.id,
+    // });
+    let [commentList,taskDetails] = await Promise.all([commentListApi({pagination:false}),taskDetailsApi({ taskId: this.$route.query.id,})])
+    this.taskInfo.push(taskDetails.data.data);
+    this.commentListData=commentList.data.data.rows;
+    console.log(taskDetails);
+    console.log('---------------------------------------');
+    console.log(this.commentListData);
   },
   methods:{
-
+handleClick(tab, event){
+  console.log(tab, event);
+}
   }
 };
 </script>
