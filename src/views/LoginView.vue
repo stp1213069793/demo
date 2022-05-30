@@ -115,6 +115,7 @@ export default {
           name: "home",
         });
       } else {
+        this.captcha=''
         this.getCaptch();
       }
     },
