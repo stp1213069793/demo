@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './styles.scss'
 import './common.scss'
 import VueSocketIO from 'vue-socket.io'
+import  '@/components/main'
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
