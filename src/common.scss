@@ -18,7 +18,9 @@ body {
     justify-content: center;
     align-items: center;
 }
-
+.flex{
+    display: flex;
+}
 .flex-center1 {
     display: flex;
     align-content: space-around;
@@ -118,7 +120,9 @@ body {
 .d-b {
     display: block;
 }
-
+.pt-20{
+    padding-top: 20px;
+}
 .pd-20{
     padding: 18px 0;
 }

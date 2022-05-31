@@ -34,13 +34,14 @@
         <div class="select">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="角色成员" name="first">
-              <div v-for="item in ruleList" :key="item.id">
+              <!-- <div v-for="item in ruleLists" :key="item.id">
                 <el-button
                   >名称：{{ item.roleName }}————分组ID：{{
                     item.groupId
                   }}</el-button
                 >
-              </div>
+              </div> -->
+            <role-members></role-members>
             </el-tab-pane>
             <el-tab-pane label="功能权限" name="second">
               <permissionSelection></permissionSelection>
@@ -57,9 +58,11 @@ const cityOptions = ["上海", "北京", "广州", "深圳"];
 import PermissionSelection from "@/components/PermissionSelection.vue";
 import { queryRuleListApi, queryRuleGroupListApi } from "@/api/api";
 import Group from "@/assets/data/group";
+import RoleMembers from '@/components/RoleMembers.vue';
 export default {
   components: {
     PermissionSelection,
+    RoleMembers,
   },
   data() {
     return {
@@ -73,8 +76,8 @@ export default {
         children: "children",
         label: "label",
       },
-      ruleList: [],
-      groupList: [],
+      ruleLists: [],
+      groupLists: [],
     };
   },
   created() {
@@ -89,6 +92,7 @@ export default {
       ]);
       let roleList = roleData.data.data.rows;
       let groupList = groupData.data.data.rows;
+      this.ruleLists=roleList
       console.log(groupList);
       console.log(roleList);
       let group = new Group({
