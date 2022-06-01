@@ -13,8 +13,13 @@
             src="../assets/icon_avatar.png"
             alt=""
           />
-          <span class="user" v-if="userInfo" >{{userInfo.phone}}</span>
-          <img @click="signOut" class="icon-close" src="../assets/icon-close.png" alt="" />
+          <span class="user" v-if="userInfo">{{ userInfo.phone }}</span>
+          <img
+            @click="signOut"
+            class="icon-close"
+            src="../assets/icon-close.png"
+            alt=""
+          />
           <span @click="signOut">退出</span>
         </div>
       </el-header>
@@ -29,65 +34,24 @@
             text-color="#fff"
             active-text-color="#ffd04b"
           >
-            <el-submenu index="1">
+            <el-submenu :index="item.id" v-for="item in data" :key="item.id">
               <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>题库管理</span>
+                <div @click="navigator(item.path)">
+                  <i class="el-icon-location"></i>
+                  <span>{{ item.groupName }}</span>
+                </div>
               </template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1" @click="navigator('questionBank')">题库管理</el-menu-item>
-                <el-menu-item index="1-2" @click="navigator('htmlBank')">HTML题库</el-menu-item>
-                <el-menu-item index="1-3" @click="navigator('cssBank')">CSS题库</el-menu-item>
-                <el-menu-item index="1-4" @click="navigator('jsBank')">JS题库</el-menu-item>
+              <el-menu-item-group
+                v-for="children in item.children"
+                :key="children.id"
+              >
+                <el-menu-item
+                  :index="children.id"
+                  @click="navigator(children.path)"
+                  >{{ children.lable }}</el-menu-item
+                >
               </el-menu-item-group>
             </el-submenu>
-            <el-menu-item index="2" @click="navigator('')">
-              <i class="el-icon-menu"></i>
-              <span slot="title">匹配比赛</span>
-            </el-menu-item>
-            <el-menu-item index="3" @click="navigator('register')">
-              <i class="el-icon-menu"></i>
-              <span slot="title">注册</span>
-            </el-menu-item>
-            <el-menu-item index="4" @click="navigator('login')">
-              <i class="el-icon-menu"></i>
-              <span slot="title">登录</span>
-            </el-menu-item>
-            <el-menu-item index="5" @click="navigator('queryTask')">
-              <i class="el-icon-document"></i>
-              <span slot="title">查询任务列表</span>
-            </el-menu-item>
-            <el-menu-item index="6" @click="navigator('ceshi')">
-              <i class="el-icon-setting"></i>
-              <span slot="title">测试</span>
-            </el-menu-item>
-            <el-submenu index="7">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>账号设置</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="7-1" @click="navigator('personInfo')">个人资料</el-menu-item>
-                <el-menu-item index="7-2" @click="navigator('AuthorityMmanagement')">权限管理</el-menu-item>
-                <el-menu-item index="7-3" @click="navigator('cssBank')">修改密码</el-menu-item>
-                <el-menu-item index="7-4" @click="navigator('')">账号绑定</el-menu-item>
-                <el-menu-item index="7-4" @click="navigator('')">认证信息</el-menu-item>
-                <el-menu-item index="7-4" @click="navigator('')">企业链接</el-menu-item>
-                <el-menu-item index="7-4" @click="navigator('jsBank')">焦点图片</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-                <el-menu-item index="8" @click="navigator('chatInterface')">
-              <i class="el-icon-setting"></i>
-              <span slot="title">聊天界面</span>
-            </el-menu-item>
-                <el-menu-item index="9" @click="navigator('ctreateTask')">
-              <i class="el-icon-setting"></i>
-              <span slot="title">创建任务</span>
-            </el-menu-item>
-                <el-menu-item index="10" @click="navigator('userInformationList')">
-              <i class="el-icon-setting"></i>
-              <span slot="title">用户信息列表</span>
-            </el-menu-item>
           </el-menu>
         </el-aside>
         <el-main>
@@ -99,24 +63,113 @@
 </template>
 
 <script>
-import {getUesrInfoApi,logOutApi} from '@/api/api'
+import { getUesrInfoApi, logOutApi } from "@/api/api";
 export default {
   data() {
     return {
       // username:'',
-    userInfo:[]
+      userInfo: [],
+      data: [
+        {
+          id: "1",
+          groupName: "题库管理",
+          children: [
+            {
+              id: "1001",
+              lable: "题库管理",
+              path: "questionBank",
+            },
+            {
+              id: "1002",
+              lable: "HTML题库",
+              path: "htmlBank",
+            },
+            {
+              id: "1003",
+              lable: "CSS题库",
+              path: "cssBank",
+            },
+            {
+              id: "1004",
+              lable: "JS题库",
+              path: "jsBank",
+            },
+          ],
+        },
+        {
+          id: "2",
+          groupName: "匹配比赛",
+        },
+        {
+          id: "3",
+          groupName: "注册",
+          path: "register",
+        },
+        {
+          id: "4",
+          groupName: "登录",
+          path: "login",
+        },
+        {
+          id: "5",
+          groupName: "测试",
+          path: "ceshi",
+        },
+        {
+          id: "6",
+          groupName: "账号设置",
+          children: [
+            {
+              id: "6001",
+              lable: "个人资料",
+              path: "personInfo",
+            },
+            {
+              id: "6002",
+              lable: "权限管理",
+              path: "AuthorityMmanagement",
+            },
+          ],
+        },
+        {
+          id: "7",
+          groupName: "任务系列",
+          children: [
+            {
+              id: "7001",
+              lable: "任务列表",
+              path: "queryTask",
+            },
+            {
+              id: "7002",
+              lable: "创建任务",
+              path: "ctreateTask",
+            },
+          ],
+        },
+        {
+          id: "8",
+          groupName: "聊天页面",
+          path: "chatInterface",
+        },
+        {
+          id: "9",
+          groupName: "用户信息列表",
+          path: "userInformationList",
+        },
+      ],
     };
   },
-  created(){
-     getUesrInfoApi().then(res=>{
-       this.userInfo=res.data.data[0];
-       if (res.data.status==401) {
-         this.$router.push({
-           name:'login'
-         })
-       }
-     });
-        // 不要用循环
+  created() {
+    getUesrInfoApi().then((res) => {
+      this.userInfo = res.data.data[0];
+      if (res.data.status == 401) {
+        this.$router.push({
+          name: "login",
+        });
+      }
+    });
+    // 不要用循环
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -131,13 +184,13 @@ export default {
         name: name,
       });
     },
-   async signOut(){
-     let res= await logOutApi();
-        if (res.data.status==1) {
-          sessionStorage.removeItem('token')
-          this.$router.push('/');
-        }
-    }
+    async signOut() {
+      let res = await logOutApi();
+      if (res.data.status == 1) {
+        sessionStorage.removeItem("token");
+        this.$router.push("/");
+      }
+    },
   },
 };
 </script>
@@ -162,16 +215,16 @@ export default {
     height: 30px;
     vertical-align: middle;
     border-radius: 20px;
-    margin-left:20px;
+    margin-left: 20px;
   }
-  & .user{
+  & .user {
     margin-right: 15px;
   }
   & .icon-close {
     width: 20px;
     height: 20px;
     vertical-align: middle;
-    margin-left:  7px;
+    margin-left: 7px;
   }
 }
 .el-aside {
@@ -179,7 +232,6 @@ export default {
   color: #fff;
   height: calc(100vh - 60px);
   overflow-x: hidden;
-
 }
 ::-webkit-scrollbar {
   width: 0;
