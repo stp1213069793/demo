@@ -120,7 +120,8 @@ export default {
       isAll:false,
       form:[{
         cc:false
-      }]
+      }],
+   
     };
   },
   computed:{

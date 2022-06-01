@@ -14,7 +14,14 @@
     <div class="role-members-main">
       <div class="flex-between">
         <div>
-            <el-select></el-select>
+             <el-select v-model="value1" placeholder="请选择">
+    <el-option
+      v-for="item in options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
             <el-button>
                 <span class="el-icon-s-fold"></span>
             </el-button>
@@ -43,13 +50,16 @@
           <el-table-column label="姓名" width="230">
             <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
-          <el-table-column prop="accountStatus" label="账号状态" width="237">
+          <el-table-column  label="账号状态" width="237">
+            <template slot-scope="scope">{{ scope.row.accountStatus }}</template>
           </el-table-column>
-          <el-table-column prop="phone" label="手机" width="200">
+          <el-table-column  label="手机" width="200">
+             <template slot-scope="scope">{{ scope.row.phone }}</template>
           </el-table-column>
-          <el-table-column prop="department" label="部门" width="162">
+          <el-table-column  label="部门" width="162">
+             <template slot-scope="scope">{{ scope.row.department }}</template>
           </el-table-column>
-          <el-table-column  label="部门" width="100">
+          <el-table-column  width="100">
               <template >
                  <el-tag><span class="el-icon-arrow-left"></span></el-tag>
               </template>
@@ -145,7 +155,24 @@ export default {
         },
       ],
       multipleSelection: [],
-      value:''
+      value:true,
+       options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value1: ''
     };
   },
 

@@ -9,11 +9,11 @@
         <div class="grid-content align-center font-size_12">
           <div>武汉市 2017-07-20 15:00 星期三 21-22℃ 晴 风力 2级 风向 微风</div>
           <img
-            class="icon-headportrait"
+            class="icon-headportrait mr-10"
             src="../assets/icon_avatar.png"
             alt=""
           />
-          <span class="user" v-if="userInfo">{{ userInfo.phone }}</span>
+          <span class="user" v-if="userInfo">hi~{{userInfo.avatarName }}</span>
           <img
             @click="signOut"
             class="icon-close"
@@ -26,31 +26,39 @@
       <el-container>
         <el-aside>
           <el-menu
-            default-active="2"
+            :default-active="data[0].id"
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
             background-color="#0c1c35"
             text-color="#fff"
             active-text-color="#ffd04b"
+            v-for="items in data"
+            :key="items.id"
           >
-            <el-submenu :index="item.id" v-for="item in data" :key="item.id">
+            <el-menu-item
+              v-if="!items.children"
+              :index="items.id"
+              @click="navigator(items.path)"
+            >
+              <i class="el-icon-setting"></i>
+              <span slot="title">{{ items.groupName }}</span>
+            </el-menu-item>
+
+            <el-submenu :index="items.id" v-else>
               <template slot="title">
-                <div @click="navigator(item.path)">
-                  <i class="el-icon-location"></i>
-                  <span>{{ item.groupName }}</span>
-                </div>
+                <i class="el-icon-location"></i>
+                <span>{{ items.groupName }}</span>
               </template>
-              <el-menu-item-group
-                v-for="children in item.children"
-                :key="children.id"
-              >
+              <!-- <el-menu-item-group> -->
                 <el-menu-item
+                  v-for="children in items.children"
+                  :key="children.id"
                   :index="children.id"
                   @click="navigator(children.path)"
                   >{{ children.lable }}</el-menu-item
                 >
-              </el-menu-item-group>
+              <!-- </el-menu-item-group> -->
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -162,7 +170,8 @@ export default {
   },
   created() {
     getUesrInfoApi().then((res) => {
-      this.userInfo = res.data.data[0];
+      this.userInfo = res.data.data;
+      console.log(res);
       if (res.data.status == 401) {
         this.$router.push({
           name: "login",

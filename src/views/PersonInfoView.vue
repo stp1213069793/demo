@@ -99,7 +99,7 @@ export default {
   async created() {
     let res = await getUesrInfoApi();
     if (res.data.status == 1) {
-      this.form = res.data.data[0];
+      this.form = res.data.data;
     }
   },
   watch: {

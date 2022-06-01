@@ -174,9 +174,9 @@ export default {
     this.handleEnter();
     let res = await getUesrInfoApi({});
     if (res.data.status == 1) {
-      this.obj.id = res.data.data[0].id;
-      this.myName = res.data.data[0].name;
-      this.obj.avatarName = res.data.data[0].name;
+      this.obj.id = res.data.data.id;
+      this.myName = res.data.data.name;
+      this.obj.avatarName = res.data.data.name;
     }
     let resc = await queryNotepadApi()
     if (resc.data.status==1) {
