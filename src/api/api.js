@@ -11,19 +11,7 @@ const getPostConfig = function() {
         }
     }
 
-//     /**
-// * @description 获取配置
-// ***/
-// const baseURL ='/api';
-// const getPostConfig = function(){
-//     return {
-//      baseURL,
-//     headers: {
-//     contentType:'application/json',
-//     authorization: sessionStorage.getItem("token"),
-//     },
-// }
-// }
+
     /**
      * @description 获取用户信息
      * @param  playod <boject>
@@ -71,19 +59,19 @@ export const registerApi = function(playod = {}) {
      * @param  playod 
      */
 export const logOutApi = function(playod = {}) {
-    return axios.post('/api/user/logout', playod)
+    return axios.post('/api/user/logout', playod,getPostConfig())
 }
 export const questionApi = function(playod = {}) {
-    return axios.post('/api/question/list', playod)
+    return axios.post('/api/question/list', playod,getPostConfig())
 }
 export const deleteQuestionApi = function(playod = {}) {
-    return axios.post('/api/question/delete', playod)
+    return axios.post('/api/question/delete', playod,getPostConfig())
 }
 export const updateQuestionApi = function(playod = {}) {
-    return axios.post('/api/question/update', playod)
+    return axios.post('/api/question/update', playod,getPostConfig())
 }
 export const createQuestionApi = function(playod = {}) {
-    return axios.post('/api/question/create', playod)
+    return axios.post('/api/question/create', playod,getPostConfig())
 }
 /**
  * 
@@ -91,7 +79,15 @@ export const createQuestionApi = function(playod = {}) {
  * 创建任务
  */
 export const createTaskApi = function(playod = {}) {
-    return axios.post('/api/task/create', playod)
+    return axios.post('/api/task/create', playod,getPostConfig())
+}
+/**
+ * 
+ * @param {} playod 
+ * 编辑任务
+ */
+export const updateTaskApi = function(playod = {}) {
+    return axios.post('/api/task/update', playod,getPostConfig())
 }
 
 /**
@@ -100,7 +96,7 @@ export const createTaskApi = function(playod = {}) {
  * 查询任务列表
  */
  export const queryTaskApi = function(playod = {}) {
-    return axios.post('/api/task/list', playod)
+    return axios.post('/api/task/list', playod,getPostConfig())
 }
 
 /**
@@ -109,7 +105,7 @@ export const createTaskApi = function(playod = {}) {
  * 发布任务
  */
  export const publishTaskApi = function(playod = {}) {
-    return axios.post('/api/task/release', playod)
+    return axios.post('/api/task/release', playod,getPostConfig())
 }
 /**
  * 
@@ -117,7 +113,7 @@ export const createTaskApi = function(playod = {}) {
  * 任务详情
  */
  export const taskDetailsApi = function(playod = {}) {
-    return axios.post('/api/task/detail', playod)
+    return axios.post('/api/task/detail', playod,getPostConfig())
 }
 /**
  * 
@@ -125,7 +121,7 @@ export const createTaskApi = function(playod = {}) {
  * 查询记事簿
  */
 export const queryNotepadApi = function(playod = {}) {
-    return axios.post('/api/diary/list', playod)
+    return axios.post('/api/diary/list', playod,getPostConfig())
 }
 
 
@@ -135,7 +131,7 @@ export const queryNotepadApi = function(playod = {}) {
  * 查询用户信息列表
  */
 export const queryUserListApi = function(playod = {}) {
-    return axios.post('/api/user/list', playod)
+    return axios.post('/api/user/list', playod,getPostConfig())
 }
 /**
  * 
@@ -143,7 +139,7 @@ export const queryUserListApi = function(playod = {}) {
  * 查询分组信息列表
  */
 export const queryRuleGroupListApi = function(playod = {}) {
-    return axios.post('/api/roleGroup/list', playod)
+    return axios.post('/api/roleGroup/list', playod,getPostConfig())
 }
 /**
  * 
@@ -151,7 +147,7 @@ export const queryRuleGroupListApi = function(playod = {}) {
  * 查询角色信息列表
  */
 export const queryRuleListApi = function(playod = {}) {
-    return axios.post('/api/role/list', playod)
+    return axios.post('/api/role/list', playod,getPostConfig())
 }
 /**
  * 
@@ -159,7 +155,7 @@ export const queryRuleListApi = function(playod = {}) {
  * 创建角色
  */
 export const createRuleApi = function(playod = {}) {
-    return axios.post('/api/role/create', playod)
+    return axios.post('/api/role/create', playod,getPostConfig())
 }
 /**
  * 
@@ -167,13 +163,21 @@ export const createRuleApi = function(playod = {}) {
  * 创建分组
  */
 export const createRuleGroupApi = function(playod = {}) {
-    return axios.post('/api/roleGroup/create', playod)
+    return axios.post('/api/roleGroup/create', playod,getPostConfig())
 }
 /**
  * 
  * @param {} playod 
- * 创建分组
+ * 获取评论
  */
 export const commentListApi = function(playod = {}) {
-    return axios.post('/api/comment/list', playod)
+    return axios.post('/api/comment/list', playod,getPostConfig())
+}
+/**
+ * 
+ * @param {} playod 
+ * 创建评论
+ */
+export const createCommentApi = function(playod = {}) {
+    return axios.post('/api/comment/create', playod,getPostConfig())
 }

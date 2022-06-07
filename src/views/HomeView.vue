@@ -193,12 +193,10 @@ export default {
         name: name,
       });
     },
-    async signOut() {
-      let res = await logOutApi();
-      if (res.data.status == 1) {
-        sessionStorage.removeItem("token");
-        this.$router.push("/");
-      }
+     signOut() {
+      logOutApi();
+      sessionStorage.setItem("token","");
+      this.$router.push("/");
     },
   },
 };

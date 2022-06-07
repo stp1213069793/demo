@@ -1,48 +1,8 @@
 <template>
-  <div>
-    <!-- 省 -->
-    <el-select v-model="province" @change="sheng" placeholder="请选择">
-      <el-option
-        v-for="item in data"
-        :key="item.code"
-        :label="item.name"
-        :value="item.code"
-      >
-        <span style="float: left">{{ item.name }}</span>
-        <span style="float: right; color: #8492a6; font-size: 13px">{{
-          item.code
-        }}</span>
-      </el-option>
-    </el-select>
-    <!-- 市 -->
-    <el-select v-model="city" @change="shi" placeholder="请选择">
-      <el-option
-        v-for="item in citydata"
-        :key="item.code"
-        :label="item.name"
-        :value="item.code"
-      >
-        <span style="float: left">{{ item.name }}</span>
-        <span style="float: right; color: #8492a6; font-size: 13px">{{
-          item.code
-        }}</span>
-      </el-option>
-    </el-select>
-    <!-- 区县 -->
-    <el-select v-model="county" placeholder="请选择">
-      <el-option
-        v-for="item in countydata"
-        :key="item.code"
-        :label="item.name"
-        :value="item.code"
-      >
-        <span style="float: left">{{ item.name }}</span>
-        <span style="float: right; color: #8492a6; font-size: 13px">{{
-          item.code
-        }}</span>
-      </el-option>
-    </el-select>
-    <div>123</div>
+  <div class="ceshi">
+    
+ 
+   
     <div id="app1">
       <h1 ref="h1Ele">这是H1</h1>
       <hello ref="ho"></hello>
@@ -55,19 +15,47 @@
       <span>3</span>
       <button @click="shu($event)">获取数据</button>
     </div>
-    <title-components>
+ <div >
+      <title-components  icon="el-icon-location">
       <span>123我爱你</span>
     </title-components>
+    <title-components  icon="el-icon-location">
+      <span>123我爱你</span>
+    </title-components>
+    <title-components  icon="el-icon-location">
+      <span>123我爱你</span>
+    </title-components>
+    <title-components  >
+      <template slot="desc"><span>这是我</span></template>
+    </title-components>
+ </div>
+
+    <el-title>
+      <span>我是123</span>
+    </el-title>
+    <el-title>
+     <template><span>这是我</span></template>
+    </el-title>
+    <el-title>
+      <span>我是123</span>
+    </el-title>
+    <el-title >
+      <span>我是123</span>
+    </el-title>
+    <el-title icon="el-icon-location">
+     <!-- <span ></span> -->
+     <span>1erq5</span>
+    </el-title>
   </div>
 </template>
 
 <script>
-import js from "@/citydata.json";
+
 // import TitleComponents from '@/components/TitleComponents.vue';
 export default {
   data() {
     return {
-      data: js,
+
       province: "",
       city: "",
       citydata: "",
@@ -75,9 +63,7 @@ export default {
       countydata: "",
     };
   },
-  // components:{
-  //   'TitleComponents':TitleComponents
-  // },
+
   created() {
     // var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 3, 213, 546, 5765, 43, 32, 87];
     // function find(arr, cb) {
@@ -100,9 +86,7 @@ export default {
     //   })
     // );
   },
-  // components:{
-  //   'hello':hello
-  // },
+
   methods: {
     shu(e) {
       console.log(e);
@@ -133,7 +117,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ceshi{
+  margin: 10px 20px;
+}
 h1 {
   color: green;
 }
+
 </style>

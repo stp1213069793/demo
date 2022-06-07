@@ -16,7 +16,7 @@
         </div>
       </div>
       <div>
-        <div>任务测试</div>
+        <div class="mtb-8">任务测试</div>
         <div>
           <el-button size="small" icon="el-icon-edit">编辑描述</el-button>
           <el-button size="small" icon="el-icon-edit">上传附件</el-button>
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div v-for="(item, index) in taskInfo" :key="index">
-        <div>任务信息</div>
+        <div class="mtb-8">任务信息</div>
         <el-descriptions border>
           <el-descriptions-item label="任务描述">{{
             item.desc
@@ -35,131 +35,93 @@
       </div>
 
       <div>
-        <div>活动日志</div>
+        <div class="mtb-8">活动日志</div>
         <div class="mb-20">
-         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="全部" name="first">
-        <div class="block" v-for="(item, index) in taskInfo" :key="index">
-          <el-timeline :reverse="reverse">
-            <el-timeline-item>
-              {{ item.userName }}创建了{{ item.taskName }}的任务——{{
-                new Date(item.createdAt).toLocaleString()
-              }}
-            </el-timeline-item>
-            <el-timeline-item>
-              {{ item.userName }}指派了任务给<span
-                v-for="(received, indexs) in item.receivedData"
-                :key="indexs"
-                >{{ received.userName }}、</span
-              >
-            </el-timeline-item>
-            <el-timeline-item>
-              <span
-                v-for="(received, indexs) in item.receivedData"
-                :key="indexs"
-              >
-                {{ received.userName }}
-                <span v-if="received.completedAt"> 、完成了任务- </span>
-                <!-- {{received.completedAt}} -->
-                <span v-else> 任务还未开始 </span>
-              </span>
-            </el-timeline-item>
-          </el-timeline>
+          <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+            <el-tab-pane label="全部" name="first">
+              <div class="block" v-for="(item, index) in taskInfo" :key="index">
+                <el-timeline :reverse="reverse">
+                  <el-timeline-item>
+                    {{ item.userName }}创建了{{ item.taskName }}的任务——{{
+                      new Date(item.createdAt).toLocaleString()
+                    }}
+                  </el-timeline-item>
+                  <el-timeline-item>
+                    {{ item.userName }}指派了任务给<span
+                      v-for="(received, indexs) in item.receivedData"
+                      :key="indexs"
+                      >{{ received.userName }}、</span
+                    >
+                  </el-timeline-item>
+                  <el-timeline-item>
+                    <span
+                      v-for="(received, indexs) in item.receivedData"
+                      :key="indexs"
+                    >
+                      {{ received.userName }}
+                      <span v-if="received.completedAt"> 、完成了任务- </span>
+                      <!-- {{received.completedAt}} -->
+                      <span v-else> 任务还未开始 </span>
+                    </span>
+                  </el-timeline-item>
+                </el-timeline>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="只看日志" name="second">
+              <div class="block" v-for="(item, index) in taskInfo" :key="index">
+                <el-timeline :reverse="reverse">
+                  <el-timeline-item>
+                    {{ item.userName }}创建了{{ item.taskName }}的任务——{{
+                      new Date(item.createdAt).toLocaleString()
+                    }}
+                  </el-timeline-item>
+                  <el-timeline-item>
+                    {{ item.userName }}指派了任务给<span
+                      v-for="(received, indexs) in item.receivedData"
+                      :key="indexs"
+                      >{{ received.userName }}、</span
+                    >
+                  </el-timeline-item>
+                  <el-timeline-item>
+                    <span
+                      v-for="(received, indexs) in item.receivedData"
+                      :key="indexs"
+                    >
+                      {{ received.userName }}
+                      <span v-if="received.completedAt"> 、完成了任务- </span>
+                      <!-- {{received.completedAt}} -->
+                      <span v-else> 任务还未开始 </span>
+                    </span>
+                  </el-timeline-item>
+                </el-timeline>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="只看评论" name="third">
+             <div class="comment-list">
+                <div v-for="(comment, index) in commentListData" :key="index" class="border">
+                <div>评论ID：{{ comment.commentId }}</div>
+                <div>评论内容：{{ comment.commentContent }}</div>
+                <div>评论时间：{{ new Date(comment.commentCreatedAt).toLocaleString() }}</div>
+                <div>任务ID：{{ comment.taskId }}</div>
+                <div>任务名字：{{ comment.taskName }}</div>
+                <div>评论用户ID：{{ comment.userId }}</div>
+                <div>评论用户名字： {{ comment.username }}</div>
+              </div>
+             </div>
+            </el-tab-pane>
+          </el-tabs>
         </div>
-    </el-tab-pane>
-    <el-tab-pane label="只看日志" name="second">
-        <div class="block" v-for="(item, index) in taskInfo" :key="index">
-          <el-timeline :reverse="reverse">
-            <el-timeline-item>
-              {{ item.userName }}创建了{{ item.taskName }}的任务——{{
-                new Date(item.createdAt).toLocaleString()
-              }}
-            </el-timeline-item>
-            <el-timeline-item>
-              {{ item.userName }}指派了任务给<span
-                v-for="(received, indexs) in item.receivedData"
-                :key="indexs"
-                >{{ received.userName }}、</span
-              >
-            </el-timeline-item>
-            <el-timeline-item>
-              <span
-                v-for="(received, indexs) in item.receivedData"
-                :key="indexs"
-              >
-                {{ received.userName }}
-                <span v-if="received.completedAt"> 、完成了任务- </span>
-                <!-- {{received.completedAt}} -->
-                <span v-else> 任务还未开始 </span>
-              </span>
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-    </el-tab-pane>
-      <el-tab-pane label="只看评论" name="third">
-    <div v-for="(comment,index) in commentListData" :key="index">
-        <div>评论ID：{{comment.commentId}}</div>
-        <div>评论内容：{{comment.commentContent}}</div>
-        <div>评论时间：{{comment.commentCreatedAt}}</div>
-        <div>任务ID：{{comment.taskId}}</div>
-        <div>任务名字：{{comment.taskName}}</div>
-        <div>评论用户ID：{{comment.userId}}</div>
-        <div>评论用户名字： {{comment.username}}</div>
-    </div>
-    </el-tab-pane>
-  </el-tabs>
-        </div>
-      
       </div>
-<!-- 评论区 -->
-      <div class="flex-center">
-        <el-button round>圆角按钮</el-button>
-        <div class="edit">
-          <div>编辑</div>
-          <div>预览</div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-          <div>B</div>
-          <div>I</div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-          <div>
-            <span class="el-icon-s-fold"></span>
-          </div>
-        </div>
+      <!-- 评论区 -->
+      <div>
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 2, maxRows: 4 }"
+          placeholder="请输入内容"
+          v-model="commentContent"
+        >
+        </el-input>
+        <el-button @click="commentBtn">点击评论</el-button>
       </div>
     </div>
     <div class="right" v-for="(item, index) in taskInfo" :key="index">
@@ -232,34 +194,40 @@
   </div>
 </template>
 <script>
-import { taskDetailsApi ,commentListApi} from "@/api/api";
+import { taskDetailsApi, commentListApi, createCommentApi,getUesrInfoApi } from "@/api/api";
 export default {
   data() {
     return {
       taskInfo: [],
       reverse: false,
       activities: [],
-      activeName:'first',
-      commentListData:[]
+      activeName: "first",
+      commentListData: [],
+      commentContent: "",
     };
   },
   async created() {
-    // console.log(this.$route.query.id);
-    // let res = await taskDetailsApi({
-    //   taskId: this.$route.query.id,
-    // });
-    let [commentList,taskDetails] = await Promise.all([commentListApi({pagination:false}),taskDetailsApi({ taskId: this.$route.query.id,})])
+    let [commentList, taskDetails] = await Promise.all([
+      commentListApi({ pagination:false}),
+      taskDetailsApi({ taskId: this.$route.query.id }),
+    ]);
     this.taskInfo.push(taskDetails.data.data);
-    this.commentListData=commentList.data.data.rows;
-    console.log(taskDetails);
-    console.log('---------------------------------------');
-    console.log(this.commentListData);
+    this.commentListData = commentList.data.data.rows;
   },
-  methods:{
-handleClick(tab, event){
-  console.log(tab, event);
-}
-  }
+  methods: {
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
+    async commentBtn(){
+      let userInfo =await getUesrInfoApi();
+        let comment = await createCommentApi({
+          commentContent:this.commentContent,
+          taskId:Number(this.$route.query.id),
+          userId:userInfo.data.data.id
+        })
+        console.log(comment);
+    }
+  },
 };
 </script>
 <style scoped lang='scss'>
@@ -275,6 +243,15 @@ handleClick(tab, event){
       display: grid;
       grid-template-columns: repeat(17, 50px);
     }
+    & .comment-list{
+      max-height: 295px;
+      overflow: hidden;
+      overflow-y: scroll;
+    }
+      ::-webkit-scrollbar{
+        height: 0;
+        width: 0;
+      }
   }
   & .right {
     padding-left: 15px;

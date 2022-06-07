@@ -109,6 +109,31 @@
             <el-link :underline="false" @click="publishTask(scope.row)"
               >发布任务</el-link
             >
+            <el-link :underline="false" @click="editTask(scope.row)"
+              >编辑任务</el-link
+            >
+            <el-dialog
+              title="编辑任务"
+              :visible.sync="centerDialogVisible"
+              width="80%"
+            >
+              <task-components @onSubmit='updateTask'  ref="forms">
+                <el-select
+                  v-model="userId"
+                  filterable
+                  multiple
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in options"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </task-components>
+            </el-dialog>
             <el-link
               :underline="false"
               v-if="!scope.row.isReceived"
@@ -154,9 +179,11 @@ import {
   publishTaskApi,
   queryUserListApi,
   taskDetailsApi,
-  getUesrInfoApi
+  getUesrInfoApi,
+  updateTaskApi
 } from "@/api/api";
 import formatDate from "@/mixins/fomatDate";
+
 export default {
   mixins: [formatDate],
   data() {
@@ -175,6 +202,14 @@ export default {
           isReceived: "",
         },
       ],
+      userId: [],
+      options: [
+        {
+          value: "",
+          label: "",
+        },
+      ],
+      centerDialogVisible: false,
       count: 0,
       pageCount: 0,
       allUser: [],
@@ -192,6 +227,7 @@ export default {
   },
   async created() {
     this.queryTaskList();
+    console.log(this.tableData);
     let resc = await queryUserListApi({
       pagination: false,
     });
@@ -201,6 +237,11 @@ export default {
         this.form.push(cc[key]);
       }
     }
+   
+    let rescs = await queryUserListApi({ pagination: false });
+
+    this.options = rescs.data.data.data.rows;
+  
   },
 
   methods: {
@@ -211,14 +252,15 @@ export default {
     },
     async queryTaskList() {
       let res = await queryTaskApi({});
+      console.log(res);
       this.assignmentData(res);
     },
     async search(e) {
       let res = await queryTaskApi({ taskName: e.taskName });
       this.assignmentData(res);
     },
-    empty(){
-      this.formInline={}
+    empty() {
+      this.formInline = {};
     },
     async handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
@@ -235,7 +277,7 @@ export default {
       });
     },
     async receiveTask(e) {
-      let personalInfo= await getUesrInfoApi();
+      let personalInfo = await getUesrInfoApi();
       let res = await publishTaskApi({
         userId: [personalInfo.data.data[0].id],
         taskId: e.id,
@@ -261,9 +303,56 @@ export default {
         }
       });
     },
+    editTask(e) {
+      this.centerDialogVisible = true;
+      console.log(e);
+      console.log(this.$refs);
+      this.$nextTick(()=>{
+        this.$refs.forms.forms.desc=e.desc
+        this.$refs.forms.forms.name=e.taskName
+        this.$refs.forms.forms.duration=e.duration
+        this.$refs.forms.forms.level=e.level
+        if (this.$refs.forms.forms.level==1) {
+          this.$refs.forms.forms.level=true
+        }
+        if (this.$refs.forms.forms.level==0) {
+          this.$refs.forms.forms.level=false
+        }
+         taskDetailsApi({
+        taskId: e.id,
+      }).then(res=>{
+              this.$refs.forms.forms.id=res.data.data.taskId
+        console.log(res.data.data.receivedData);
+      res.data.data.receivedData.forEach(els=>{
+        
+        this.userId.push(els.userId)
+      })
+      })
+   
+      })
+    },
+    async updateTask(es){
+      console.log(es);
+      if (es.level==true) {
+          es.level=1
+        }
+        if (es.level==false) {
+          es.level=0
+        }
+      let res = await updateTaskApi(es)
+      if (res.data.status==1) {
+        let task = await publishTaskApi({
+          userIds:this.userId,
+          taskId:es.id
+        })
+        console.log(task);
+        this.centerDialogVisible=false
+      }
+      console.log(this.userId);
+    },
     changeTaskPersonnel() {
       publishTaskApi({
-        userId: this.value,
+        userIds: this.value,
         taskId: this.tid,
       }).then((res) => {
         if (res.data.status == 1) {
