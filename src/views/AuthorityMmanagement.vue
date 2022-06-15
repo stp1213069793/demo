@@ -41,7 +41,8 @@
                   }}</el-button
                 >
               </div> -->
-            <role-members></role-members>
+              <role-members></role-members>
+              
             </el-tab-pane>
             <el-tab-pane label="功能权限" name="second">
               <permissionSelection></permissionSelection>
@@ -56,9 +57,13 @@
 <script>
 const cityOptions = ["上海", "北京", "广州", "深圳"];
 import PermissionSelection from "@/components/PermissionSelection.vue";
-import { queryRuleListApi, queryRuleGroupListApi } from "@/api/api";
+import {
+  queryRuleListApi,
+  queryRuleGroupListApi,
+  getRolepermissionApi,
+} from "@/api/api";
 import Group from "@/assets/data/group";
-import RoleMembers from '@/components/RoleMembers.vue';
+import RoleMembers from "@/components/RoleMembers.vue";
 export default {
   components: {
     PermissionSelection,
@@ -78,36 +83,37 @@ export default {
       },
       ruleLists: [],
       groupLists: [],
-   
     };
   },
   created() {
     this.getMenuList();
-
+    this.getRolepermission();
   },
   methods: {
+    async getRolepermission() {
+      let res = await getRolepermissionApi({ pagination: false });
+      console.log(res);
+    },
     async getMenuList() {
       let [roleData, groupData] = await Promise.all([
-        queryRuleListApi({pagination:false}),
-        queryRuleGroupListApi({pagination:false}),
+        queryRuleListApi({ pagination: false }),
+        queryRuleGroupListApi({ pagination: false }),
       ]);
       let roleList = roleData.data.data.rows;
       let groupList = groupData.data.data.rows;
-      this.ruleLists=roleList
-      console.log(groupList);
-      console.log(roleList);
+      this.ruleLists = roleList;
       let group = new Group({
         groupList,
         roleList,
       });
       this.data = group.menu;
-     console.log(this.data);
     },
     handleClick(tab, event) {
       console.log(tab, event);
     },
     handleNodeClick(data) {
-      console.log(data);
+      // console.log(data);
+      console.log(data.label);
     },
     handleCheckAllChange(val) {
       this.checkedCities = val ? cityOptions : [];

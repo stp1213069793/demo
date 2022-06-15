@@ -42,7 +42,8 @@
               v-model="captcha"
               placeholder="请输入验证码"
             ></el-input>
-            <img @click="getCaptch" :src="captchaSrc" alt="" />
+            <!-- <img @click="getCaptch" :src="captchaSrc" alt="" /> -->
+            <el-captcha ref="captcha"></el-captcha>
           </div>
           <el-input
             prefix-icon="el-icon-user-solid"
@@ -85,6 +86,8 @@
 <script>
 import { encrypt } from "@/assets/utils/index";
 import { registerApi, getCapchaApi, loginApi } from "@/api/api";
+
+import CaptchaComponent  from "@/components/CaptchaComponent.vue";
 export default {
   name: "RegisterView",
   data() {
@@ -107,7 +110,9 @@ export default {
   created(){
     this.getCaptch()
   },
-   
+   components:{
+     'el-captcha':CaptchaComponent
+   },
   methods: {
     next() {
       if (this.active++ > 1) this.active = 0;
@@ -197,7 +202,7 @@ export default {
         this.fn();
         this.getToken();
       } else {
-        this.getCaptch();
+        this.$refs.captcha.getCaptcha();
         console.log("失败");
       }
     },

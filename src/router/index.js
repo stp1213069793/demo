@@ -8,6 +8,7 @@ const routes = [{
     path: '/home',
     name: 'home',
     component: HomeView,
+    redirect:'/questionBank',
     children: [{
         path: '/htmlBank',
         name: 'htmlBank',
@@ -116,6 +117,33 @@ const routes = [{
         component: () =>
             import( /* webpackChunkName: "login" */ '../views/task/TaskDetails.vue')
     },
+    {
+        path: '/newRole',
+        name: 'newRole',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import( /* webpackChunkName: "login" */ '../views/role/NewRole.vue')
+    },
+    {
+        path: '/addGroup',
+        name: 'addGroup',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import( /* webpackChunkName: "login" */ '../views/roleGroup/AddGroup.vue')
+    },
+    {
+        path: '/permissionConfiguration',
+        name: 'permissionConfiguration',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import( /* webpackChunkName: "login" */ '../views/permissionConfiguration.vue')
+    },
     ]
 },
 {
@@ -140,24 +168,8 @@ const routes = [{
 
 
 
-{
-    path: '/newRole',
-    name: 'newRole',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import( /* webpackChunkName: "login" */ '../views/role/NewRole.vue')
-},
-{
-    path: '/addGroup',
-    name: 'addGroup',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import( /* webpackChunkName: "login" */ '../views/roleGroup/AddGroup.vue')
-},
+
+
 {
     path: '/uerDdetails',
     name: 'uerDdetails',

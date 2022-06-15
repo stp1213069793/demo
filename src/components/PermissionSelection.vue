@@ -3,157 +3,82 @@
     <div class="select-all flex-between">
       <div>设置角色对应的功能操作、应用管理、后台管理权限</div>
       <div>
-        <el-checkbox :v-model="isAll">全选</el-checkbox>
+        <el-checkbox>全选</el-checkbox>
       </div>
     </div>
 
-
-    <div class="check">
-      <div class="message"><el-checkbox v-model="itemF" ref='itemf'>消息</el-checkbox></div>
-      <div class="2">
-        <div class="pd-20">
-          <el-checkbox v-model="itemF" ref='itemf'>消息应用设置</el-checkbox>
-        </div>
-        <div>
-          <el-checkbox v-model="itemF" ref='itemf'>管理公开群组</el-checkbox>
-        </div>
-        <div class="pd-20">
-          <el-checkbox>群组中删除消息</el-checkbox>
-        </div>
-      </div>
-      <div class="3">
-        <div class="pd-20">
-          <el-checkbox>创建公开群组</el-checkbox>
-        </div>
-        <div>
-          <el-checkbox>群组企业公告中发送消息</el-checkbox>
-        </div>
-      </div>
-      <div class="4">
-        <div class="pd-20">
-          <el-checkbox>创建私有群组</el-checkbox>
-        </div>
+    <div class="quanxuan">
+      <div class="item" v-for="item in menu" :lable="item.lable" :key="item.id">
+        <el-checkbox
+          :indeterminate="item.isIndeterminate"
+          v-model="item.checked"
+          @change="handleCheckAllChange($event, item)"
+          >{{ item.lable }}</el-checkbox
+        >
+        <div style="margin: 15px 0"></div>
+        <el-checkbox-group
+          v-model="item.arr"
+          @change="handleCheckedCitiesChange($event, item)"
+        >
+          <el-checkbox
+            v-for="children in item.children"
+            :label="children"
+            :key="children.id"
+            >{{ children }}</el-checkbox
+          >
+        </el-checkbox-group>
       </div>
     </div>
-    <div class="check">
-      <div class="message"><el-checkbox>项目</el-checkbox></div>
-      <div class="2">
-        <div class="pd-20">
-          <el-checkbox>消息应用设置</el-checkbox>
-        </div>
-        <div class="pb-20">
-          <el-checkbox>管理公开群组</el-checkbox>
-        </div>
-        <!-- <div class="pd-20">
-                      <el-checkbox>群组中删除消息</el-checkbox>
-             </div> -->
-      </div>
-      <div class="3">
-        <div class="pd-20">
-          <el-checkbox>创建公开群组</el-checkbox>
-        </div>
-        <div>
-          <el-checkbox>群组企业公告中发送消息</el-checkbox>
-        </div>
-      </div>
-      <div class="4">
-        <div class="pd-20">
-          <el-checkbox>创建私有群组</el-checkbox>
-        </div>
-      </div>
-    </div>
-    <div class="check">
-      <div class="message"><el-checkbox>日历</el-checkbox></div>
-      <div class="2">
-        <div class="pd-20">
-          <el-checkbox>消息应用设置</el-checkbox>
-        </div>
-        <div class="pb-20">
-          <el-checkbox>管理公开群组</el-checkbox>
-        </div>
-        <!-- <div class="pd-20">
-                      <el-checkbox>群组中删除消息</el-checkbox>
-             </div> -->
-      </div>
-      <div class="3">
-        <div class="pd-20">
-          <el-checkbox>创建公开群组</el-checkbox>
-        </div>
-      </div>
-      <div class="4">
-        <div class="pd-20">
-          <el-checkbox>创建私有群组</el-checkbox>
-        </div>
-      </div>
-    </div>
-    <div class="check">
-      <div class="message"><el-checkbox>网盘</el-checkbox></div>
-      <div class="2">
-        <div class="pd-20">
-          <el-checkbox>消息应用设置</el-checkbox>
-        </div>
-        <div class="pb-20">
-          <el-checkbox>管理公开群组</el-checkbox>
-        </div>
-        <!-- <div class="pd-20">
-                      <el-checkbox>群组中删除消息</el-checkbox>
-             </div> -->
-      </div>
-      <div class="3">
-        <div class="pd-20">
-          <el-checkbox>创建公开群组</el-checkbox>
-        </div>
-        <div>
-          <el-checkbox>群组企业公告中发送消息</el-checkbox>
-        </div>
-      </div>
-    </div>
-
-    <button @click="dianji"></button>
   </div>
 </template>
 <script>
+import menus from "@/config/menu.config";
 export default {
   data() {
     return {
-      itemF:false,
-      isAll:false,
-      form:[{
-        cc:false
-      }],
-   
+      checkedCities: [],
+      menu: [],
+      isIndeterminate: false,
     };
   },
-  computed:{
-    // isAll: {
-    //   //全选影响小选
-    //   set(val) {
-    //     //set(val) 设置全选的状态(true/ false)
-    //     //我们手动设置了全选框的状态,就遍历数组里的每个对象的c属性, 也就是遍历看每个小选框的状态,让它的状态改为 val 全选框的状态
-    //     this.arr.forEach((obj) => (obj.c = val));
-    //   },
-    //   //小选框影响全选框
-    //   get() {
-    //     //判断数组里的每一个对象的c属性 它是不是等于true, 就是判断每一个小选框的状态, 只要有一个小选框的状态不为true 就是没有被勾上, 那就返回false , 全选框的状态就是false
-    //     // every口诀: 查找数组里"不符合"条件, 直接原地返回false
-    //     return this.arr.every((obj) => obj.c === true);
-    //   },
-    // },
+  created() {
+    this.menu = menus.map((data) => {
+      let item = JSON.parse(JSON.stringify(data));
+      item.isIndeterminate = false;
+      item.children = item.children
+        ? item.children.map((i) => {
+            return i.lable;
+          })
+        : [];
+      item.arr = [];
+      return item;
+    });
   },
   methods: {
-    dianji(){
-      this.isAll==true
-      this.itemF=true
-      if (this.isAll==false) {
-        this.itemF=! this.itemF
-      }
-    }
+    handleCheckAllChange(val, group) {
+      group.isIndeterminate = false;
+      group.arr = val ? group.children : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedCitiesChange(value, item) {
+      let checkedCount = value.length;
+      item.checked = checkedCount === item.children.length;
+      item.isIndeterminate =
+        checkedCount > 0 && checkedCount < item.children.length;
+      console.log(item.isIndeterminate);
+    },
   },
 };
 </script>
 <style scoped lang='scss'>
 .zong {
   background: #fafbfc;
+}
+.quanxuan{
+  margin: 15px 0;
+}
+.item{
+  margin-top: 30px;
 }
 .check {
   display: grid;

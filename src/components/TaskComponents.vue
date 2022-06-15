@@ -1,68 +1,150 @@
 <template>
-  <div class="main">
-    <h1>创建任务</h1>
-    <el-form
-  
-      :label-position="labelPosition"
-      :model="forms"
-      label-width="110px"
-    >
-      <el-form-item label="任务名称：">
-        <el-input v-model="forms.name"></el-input>
+  <div class="create-task form-color">
+    <el-form ref="form" :model="form" label-width="80px">
+      <el-form-item label="任务名称">
+        <el-input
+          style="width: 300px"
+          placeholder="请输入任务名称"
+          v-model="form.name"
+        ></el-input>
       </el-form-item>
-
-      <el-form-item label="任务时长：">
-        <el-input type="text" v-model="forms.duration"></el-input>
+      <el-form-item label="任务时长">
+        <div class="flex">
+          <el-input style="width: 60px" v-model="form.duration"></el-input>
+          <span class="ml-5">小时</span>
+        </div>
       </el-form-item>
-      <el-form-item label="任务描述：">
-        <el-input type="textarea" v-model="forms.desc" :rows="8"></el-input>
+      <el-form-item label="任务描述">
+        <el-input
+          placeholder="请输入任务描述"
+          style="max-width: 370px"
+          type="textarea"
+          v-model="form.desc"
+        ></el-input>
       </el-form-item>
-
-      <slot></slot>
-      <el-form-item label="是否紧急：">
-        <el-switch v-model="forms.level"></el-switch>
+      <el-form-item label="执行人" style="max-width: 400px" v-if="receivedTaskUsers.length">
+        <el-select
+          v-model="form.userIds"
+          multiple
+          filterable
+          placeholder="请选择执行人"
+        >
+          <el-option
+            :label="user.name"
+            v-for="user in receivedTaskUsers"
+            :value="user.id"
+            :key="user.id"
+          ></el-option>
+        </el-select>
       </el-form-item>
-
+      <el-form-item label="是否紧急">
+        <el-switch v-model="form.level"></el-switch>
+      </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit(forms)">确定</el-button>
+        <el-button type="primary" @click="onSubmit">确定</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
-// publishTaskApi
+import { queryUserListApi, taskDetailsApi } from "@/api/api";
 export default {
+  props: ['task-id'],
   data() {
     return {
-      labelPosition: "right",
-      forms: {
+      id:'',
+      form: {
         name: "",
-        level: 1,
+        level: false,
         desc: "",
-        duration: "",
+        duration: 1,
+        userIds: [],
       },
-        taskId: "",
+      users: [],
     };
   },
+  watch:{
+    taskId(newValue){
+      this.getUserListByTask(newValue);
+    }
+  },
+  computed:{
+    receivedTaskUsers(){
+      return this.users.filter(item=> item.isReceived != 1);
+    }
+  },
+  created() {
+    if(this.taskId){
+      this.getUserListByTask(this.taskId);
+    }else{
+      this.getUserList();
+    }
+  },
   methods: {
-     qingkong(){
-      this.forms={
+    initForm() {
+      this.form = {
         name: "",
-        level: 1,
+        level: false,
         desc: "",
-        duration: "",
+        userIds: [],
+        duration: 1,
+      };
+    },
+    async getUserList(){
+      let res =await queryUserListApi({pagination:false})
+      console.log(res);
+      this.users = res.data.data.data.rows
+    },
+    async getUserListByTask(taskId) {
+      let [usersResult, taskDetailResult] = await Promise.all([
+        queryUserListApi({ pagination: false }),
+        taskDetailsApi({ taskId }),
+      ]);
+      let users = usersResult.data.data.data.rows;
+      let taskDetail = taskDetailResult.data.data;
+      let receivedData = taskDetail.receivedData;
+      
+      this.users = users.map(item =>{
+          item.isReceived = receivedData.find( data => data.userId == item.id ) ? 1 : 0;
+          return item;
+      })
+
+      const { taskName, level, desc, duration } = taskDetail;
+      this.form = {
+        name: taskName,
+        level:level == 1,
+        desc,
+        duration,
+      };
+    },
+    onSubmit() {
+      let { name, level, desc, duration, userIds } = this.form;
+      let params = {
+        name,
+        level: level ? 1 : 0,
+        desc,
+        duration,
       }
+      if(this.taskId){
+         params = Object.assign(params,{id:this.taskId})
+      }
+      this.$emit('submit',params,userIds);
     },
-    async onSubmit(forms) {
-      this.$emit("onSubmit", forms);
-    },
-    
   },
 };
 </script>
-<style scoped lang='scss'>
-.main {
-  margin: 50px auto;
-  width: 50%;
+
+<style scoped lang="scss">
+.create-task {
+  background: #fff;
+  padding: 15px 12px;
+  height: 100%;
+  box-sizing: border-box;
+}
+.title {
+  padding: 15px 0;
+}
+::v-deep .el-textarea__inner {
+  height: 140px;
 }
 </style>

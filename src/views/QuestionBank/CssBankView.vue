@@ -1,29 +1,19 @@
 <template>
-  <div class="quill-wrap">
-    <quill-editor ref="myQuillEditor" v-model="content"  />
+  <div>
+    <title-components></title-components>
   </div>
 </template>
 <script>
-import 'quill/dist/quill.snow.css'
-import { quillEditor } from 'vue-quill-editor'
+
+
 
 export default {
-  components: { quillEditor },
+ 
   data() {
     return {
-      content: '',
     }
   },
-  created(){
-    console.log(this.content);
-  }
+
 }
 </script>
-<style>
-.ql-container {
-  min-height: 300px;
-}
-.quill-editor {
-  width: 880px;
-}
-</style>
+

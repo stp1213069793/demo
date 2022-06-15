@@ -1,58 +1,21 @@
 <template>
   <div class="ceshi">
     
- 
-   
-    <div id="app1">
-      <h1 ref="h1Ele">这是H1</h1>
-      <hello ref="ho"></hello>
 
-      <button @click="getref">获取H1元素</button>
-    </div>
-    <div>
-      <span>1</span>
-      <span>2</span>
-      <span>3</span>
-      <button @click="shu($event)">获取数据</button>
-    </div>
- <div >
-      <title-components  icon="el-icon-location">
-      <span>123我爱你</span>
-    </title-components>
-    <title-components  icon="el-icon-location">
-      <span>123我爱你</span>
-    </title-components>
-    <title-components  icon="el-icon-location">
-      <span>123我爱你</span>
-    </title-components>
-    <title-components  >
-      <template slot="desc"><span>这是我</span></template>
-    </title-components>
- </div>
 
-    <el-title>
-      <span>我是123</span>
-    </el-title>
-    <el-title>
-     <template><span>这是我</span></template>
-    </el-title>
-    <el-title>
-      <span>我是123</span>
-    </el-title>
-    <el-title >
-      <span>我是123</span>
-    </el-title>
-    <el-title icon="el-icon-location">
-     <!-- <span ></span> -->
-     <span>1erq5</span>
-    </el-title>
+
+    <!-- <function-permissions></function-permissions> -->
+    <title-components></title-components>
   </div>
 </template>
 
 <script>
-
+// import FunctionPermissions from '@/components/FunctionPermissions.vue';
 // import TitleComponents from '@/components/TitleComponents.vue';
+
+
 export default {
+  // components: { FunctionPermissions, TitleComponents },
   data() {
     return {
 

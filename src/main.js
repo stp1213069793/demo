@@ -8,10 +8,11 @@ import './styles.scss'
 import './common.scss'
 import VueSocketIO from 'vue-socket.io'
 import  '@/components/main'
+import navigator from'@/assets/utils/navigator'
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-
+Vue.use(navigator)
 new Vue({
     router,
     store,
